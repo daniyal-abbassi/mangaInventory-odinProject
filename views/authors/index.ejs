@@ -1,0 +1,78 @@
+<a href="/authors/create"><h1 class="author-title">Add Author</h1></a>
+<div class="authors-continer">
+  <%if(authors&&authors.length>0) {%> <% authors.forEach(author=>{ %>
+  <div class="author-item" data-author-id="<%=author.author_id%>">
+    <h3 style="order: 1"><%= author.name %></h3>
+    <!--should add condition to see if any manga is available-->
+    <a href="/authors/<%=author.author_id%>/works">Show All >> </a>
+    <div class="author-mangas" tyle="display: flex; gap: 50px;"></div>
+  </div>
+  <%}) %> <%} else {%>
+  <p>No authors(With Manga)found!</p>
+  <%}%>
+  <div class="author-item-no-manga">
+    <p>Authors List - With No Manga Yet</p>
+    <%if(authorsWithNoManga && authorsWithNoManga.length>0) {%>
+    <%authorsWithNoManga.forEach(author=>{%>
+    <p><%=author.name%></p>
+    <%})%> <%} else {%>
+    <p>All Authors Have Manga!</p>
+    <%}%>
+  </div>
+</div>
+
+<script>
+  //add an event listener after the content is loaded
+  document.addEventListener("DOMContentLoaded", () => {
+    //get author div containers
+    authorDivs = document.querySelectorAll(".author-item");
+    //do a async map forEach of containers
+    authorDivs.forEach(async (authorItem) => {
+      //get the id of author
+      const authorId = authorItem.getAttribute("data-author-id");
+      //get authorMangas conteiner
+      const mangaContainer = authorItem.children[2];
+      //do a try and catch block for fetching mangas
+      try {
+        //fetch desired mangas in a response
+        const response = await fetch(`/authors/${authorId}/works`);
+        //call .text() and get html text of fetch we did
+        const html = await response.text();
+
+        //create a new parser instance
+        const parser = new DOMParser();
+        //parse the html text with text/html
+        const doc = parser.parseFromString(html, "text/html");
+
+        //turn that parsed html into an array
+        const mangaDataElement = doc.getElementById("manga-data");
+
+        const mangaData = JSON.parse(mangaDataElement.textContent);
+        //create a div and an img for each
+        mangaData.forEach((manga) => {
+          //creata a mangaDiv
+          const mangaDiv = document.createElement("div");
+          //create a mangaImg
+          const mangaImg = document.createElement("img");
+          //append src and alt to imaga
+          mangaImg.src = manga.image_url;
+          mangaImg.alt = manga.title;
+          mangaImg.onerror = function() {
+            this.onerror = null;
+            this.src = '/images/oops.webp'
+          }
+          //append the title to div
+          // mangaDiv.textContent = manga.title;
+          mangaDiv.appendChild(mangaImg);
+          //append div and manga to mangaContainer
+          mangaContainer.appendChild(mangaDiv);
+        });
+
+        //handle catch(error)
+      } catch (error) {
+        console.error(`Error fetching mangas: ${error} `);
+        mangaContainer.textContent = "This Category is Empty.";
+      }
+    });
+  });
+</script>

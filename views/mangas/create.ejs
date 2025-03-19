@@ -1,0 +1,87 @@
+<h1 class="add-manga-title">Add Manga Form</h1>
+
+<form action="/mangas" method="POST" class="add-manga-form">
+  <div class="title-create">
+    <label for="title"><h3>Title </h3></label>
+    <input type="text" id="title" name="title" /><br /><br />
+  </div>
+
+  <div id="authors-container">
+    <label for="author"><h3>Author(s)</h3> </label>
+    <div class="author-input">
+      <input type="text" name="authors[]" id="author-input-field" />
+      <button type="button" class="add-author-btn">Add</button>
+    </div>
+  </div>
+
+  <div id="categories-container">
+    <label for="category"><h3>Add or Select Category(s) </h3></label>
+    <% if(categories && categories.length > 0) { %><% categories.forEach(category => { %>
+        <label class="category-label" for="category<%=category.category_id%>"><%=category.name%></label>
+        <input
+          type="checkbox"
+          id="category<%=category.category_id%>"
+          name="categories[]"
+          value="<%=category.name%>"
+        />
+      <% }); %><% } %>
+    <div class="category-input">
+        <input type="text" name="categories[]" id="category-input-field" />
+        <button type="button" class="add-category-btn">Add</button>
+    </div>
+  </div>
+
+  <div class="date-create">
+
+    <label for="release_date"><h3>Release</h3></label>
+    <input type="date" name="release_date" id="release_date" />
+  </div>
+
+  <div class="create-image">
+    <label for="image_url"><h3>Image URL</h3> </label>
+    <input type="url" name="image_url" id="image_url" />
+  </div>
+  <label for="description"><h3>Story </h3></label>
+  <textarea placeholder="Type Manga's Story Here..." name="description" id="description" cols="30" rows="10"></textarea>
+
+
+
+  <input class="add-manga-button" type="submit" value="Add Manga" />
+</form>
+
+<script> //for adding multi-authors/categories
+  document.addEventListener("DOMContentLoaded", () => {
+    const authorsContainer = document.getElementById("authors-container");
+
+    authorsContainer.addEventListener("click", (e) => {
+      if (e.target.classList.contains("add-author-btn")) {
+        const newAuthorInput = document.createElement("div");
+        newAuthorInput.classList.add("author-input");
+        newAuthorInput.innerHTML = `
+                    <input type="text" name="authors[]" id="author-input-field" >
+                    <button type="button" class="add-author-btn">Add</button>
+                    <button type="button" class="remove-author-btn">Remove</button>
+                `;
+                authorsContainer.appendChild(newAuthorInput);
+      } else if(e.target.classList.contains('remove-author-btn')) {
+        e.target.parentElement.remove();
+      } 
+    });
+
+    const categoriesContainer = document.getElementById('categories-container');
+    categoriesContainer.addEventListener('click',(e)=>{
+        if(e.target.classList.contains('add-category-btn')) {
+            const newCategoryInput = document.createElement('div');
+            newCategoryInput.classList.add('category-input');
+            newCategoryInput.innerHTML = `
+            <input type="text" name="categories[]" id="category-input-field" />
+            <button type="button" class="add-category-btn">Add</button>
+            <button type="button" class="remove-category-btn">Remove</button>
+            `;
+            categoriesContainer.appendChild(newCategoryInput)
+        } else if (e.target.classList.contains('remove-category-btn')) {
+            e.target.parentElement.remove()
+        }
+    })
+  });
+</script>

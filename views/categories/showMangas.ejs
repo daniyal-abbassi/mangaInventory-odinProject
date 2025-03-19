@@ -1,0 +1,34 @@
+<div style="display: none" id="manga-data">
+    <%- JSON.stringify(mangas) %>
+</div>
+
+
+<h1 class="show-category-title">Category : <span><%=categoryName.name%></span></h1>
+
+<div class="categories-mangas">
+    <% if(mangas && mangas.length > 0) {%>
+        <%mangas.forEach(manga=> {%>
+            <div class="manga-category-item" id="category-manga-<%=manga.manga_id%>">
+
+                <h3><%=manga.title%></h3>
+                <img src="<%=manga.image_url%>" alt="<%=manga.title%>" onerror="this.onerror=null; this.src='/images/oops.webp';">
+            </div>
+            <script>
+                document.getElementById("category-manga-<%=manga.manga_id%>").addEventListener('click',()=>{
+                  window.location.href="/mangas/<%=manga.manga_id%>/show"
+                })
+              </script>
+        <%})%> 
+    <%} else {%>
+        <h3><%=mangas.title%></h3>
+        <img src="<%=mangas.image_url%>" alt="<%=mangas.title%>">
+            
+    </div>
+    <script>
+        document.getElementById("category-manga-<%=manga.manga_id%>").addEventListener('click',()=>{
+          window.location.href="/mangas/<%=manga.manga_id%>/show"
+        })
+      </script>
+    <%}%>
+
+

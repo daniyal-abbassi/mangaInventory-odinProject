@@ -1,0 +1,77 @@
+<a  href="/categories/create"
+    ><h1 class="categories-title"> Add Categories</h1></a>
+
+
+<div class="categories-container">
+  <%if(categories&&categories.length>0){%>
+    <% categories.forEach(category => { %>
+  
+    <div class="category-item" data-category-id="<%=category.category_id%>">
+      <h3 style="order: 1"><%= category.name %></h3>
+  
+      <a href="/categories/<%=category.category_id%>/mangas">Show All >> </a>
+  
+      <div class="catagory-mangas" style="display: flex; gap: 50px"></div>
+    </div>
+  
+    <% }); %>
+
+  <%} else {%>
+    <p>No Categories(with manga) found!</p>
+  <%}%>
+  <div class="category-item-no-manga">
+    <p>Categories List - With No Manga Yet</p>
+    <%if(categoriesWithNoManga && categoriesWithNoManga.length>0) {%>
+    <%categoriesWithNoManga.forEach(category=>{%>
+    <p><%=category.name%></p>
+    <%})%> <%} else {%>
+    <p>All Categories Have Manga!</p>
+    <%}%>
+  </div>
+</div>
+
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    //get all category item divs(for each category)
+    const categoryItems = document.querySelectorAll(".category-item");
+    //do assignment for each div
+    categoryItems.forEach(async (categoryItem) => {
+      //get the id for that category
+      const categoryId = categoryItem.getAttribute("data-category-id");
+
+      //get the container for mangas
+      const mangaContainer = categoryItem.children[2];
+
+      //make a try and catch block for fetching the mangas
+      try {
+        //await for mangas for each category
+        const response = await fetch(`/categories/${categoryId}/mangas`);
+        //make it like text
+        const html = await response.text();
+        //parse the text ?
+        const parser = new DOMParser();
+        const doc = parser.parseFromString(html, "text/html");
+        const mangaDataElement = doc.getElementById("manga-data");
+
+        const mangaData = JSON.parse(mangaDataElement.textContent);
+
+        mangaData.forEach((manga) => {
+          const mangaDiv = document.createElement("div");
+          const mangaImg = document.createElement("img");
+          mangaImg.src = manga.image_url;
+          mangaImg.alt = manga.title;
+          mangaImg.onerror = function() {
+            this.onerror = null;
+            this.src = '/images/oops.webp'
+          }
+          // mangaDiv.textContent = manga.title;
+          mangaDiv.appendChild(mangaImg);
+          mangaContainer.appendChild(mangaDiv);
+        });
+      } catch (error) {
+        console.error(`Error fetching mangas: ${error} `);
+        mangaContainer.textContent = "Error loading Mangas.";
+      }
+    });
+  });
+</script>

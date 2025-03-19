@@ -1,0 +1,129 @@
+<h1 class="add-manga-title">Edit Manga: <%=manga.title %></h1>
+
+<form class="add-manga-form" action="/mangas/<%=manga.manga_id%>/update" method="POST">
+  <div class="title-create">
+    <label for="title"><h3>Edit Title </h3></label>
+    <input type="text" id="title" name="title" value="<%=manga.title%>"><br><br>
+  </div>
+    
+    
+    
+    <!--SHOW AUTHORS , DELETE OR EDIT OR ADD NEW AUTHOR -->
+    <h2>Authors section</h2>
+    <ul class="authors-edit-list">
+        <% if(authors) {%>
+            <%authors.forEach((author,index)=>{%>
+                <li>
+                    <label for="author-<%=author.author_id%>"><%=index+1%>-</label>
+                <input class="author-edit-author-input" readonly name="authors[]" type="text" id="author-<%=author.author_id%>" value="<%=author.name%>">
+                <button class="author-edit-author-btn" type="button" onclick="deleteAuthor(<%=author.author_id%>, <%=manga.manga_id%>)">Delete</button>
+                <%})%>
+                </li>  
+        <%}%>
+    </ul>
+    <div id="authors-container">
+        <label for="author">Add new Author(s): </label>
+        <div class="author-input">
+          <input type="text" name="authors[]" id="author-input-field" />
+          <button type="button" class="add-author-btn">Add</button>
+        </div>
+      </div>
+    
+    <!-- CATEGORY SECTION -->
+     <!--show which categories are included in this manga-->
+     <h2>Category section</h2>
+      <!--included categories should be checked-->
+      <!--uncheck a category will delete it from database-->
+     <!--should have a button to add new categories-->
+     <!--add a new category should be added to database too-->
+     <div id="categories-container">
+        <label for="category">Add or Un-check a category(s): </label>
+        <% if(categories && categories.length > 0) { %><% categories.forEach((category,index) => { %>
+            <label for="category<%=category.category_id%>"><%=category.name%></label>
+            <input
+              type="checkbox"
+              id="category<%=category.category_id%>"
+              name="categories[]"
+              value="<%=category.name%>"
+              checked
+            />
+          <% }); %><% } %>
+        <div class="category-input">
+            <input type="text" name="categories[]" id="category-input-field" />
+            <button type="button" class="add-category-btn">Add</button>
+        </div>
+      </div>
+     
+      
+    <div class="date-create">
+
+      <label for="release_date">Edit Release Date</label>
+      <input type="date" name="release_date" id="release_date" value="<%=manga.release_date%>"><br><br>
+    </div>
+
+    <div class="create-image">
+
+      <label for="image_url">Edit Imaga URL</label>
+      <input type="url"  name="image_url" id="image_url" value="<%=manga.image_url%>">
+    </div>
+    <label for="description"> Edit Story </label>
+    <textarea name="description" id="description" cols="30" rows="10"><%=manga.description%></textarea>
+
+
+    <input class="add-manga-button" type="submit" value="Edit Manga">
+</form>
+
+<script> 
+
+    
+    
+    function deleteAuthor(author_id,manga_id) {
+        if(confirm('sure you wanna delete this author?')) {
+            fetch(`/authors/${author_id}/delete?manga_id=${manga_id}`,{
+                method: 'POST'
+            })
+            .then(()=>{
+                location.reload()
+            }).catch(error=>console.error('Error deleting author: ',error))
+
+        }   
+    }
+
+
+
+//for adding multi-authors/categories
+    document.addEventListener("DOMContentLoaded", () => {
+      const authorsContainer = document.getElementById("authors-container");
+  
+      authorsContainer.addEventListener("click", (e) => {
+        if (e.target.classList.contains("add-author-btn")) {
+          const newAuthorInput = document.createElement("div");
+          newAuthorInput.classList.add("author-input");
+          newAuthorInput.innerHTML = `
+                      <input type="text" name="authors[]" id="author-input-field" >
+                      <button type="button" class="add-author-btn">Add</button>
+                      <button type="button" class="remove-author-btn">Remove</button>
+                  `;
+                  authorsContainer.appendChild(newAuthorInput);
+        } else if(e.target.classList.contains('remove-author-btn')) {
+          e.target.parentElement.remove();
+        } 
+      });
+  
+      const categoriesContainer = document.getElementById('categories-container');
+      categoriesContainer.addEventListener('click',(e)=>{
+          if(e.target.classList.contains('add-category-btn')) {
+              const newCategoryInput = document.createElement('div');
+              newCategoryInput.classList.add('category-input');
+              newCategoryInput.innerHTML = `
+              <input type="text" name="categories[]" id="category-input-field" />
+              <button type="button" class="add-category-btn">Add</button>
+              <button type="button" class="remove-category-btn">Remove</button>
+              `;
+              categoriesContainer.appendChild(newCategoryInput)
+          } else if (e.target.classList.contains('remove-category-btn')) {
+              e.target.parentElement.remove()
+          }
+      })
+    });
+  </script>

@@ -1,0 +1,236 @@
+<div class="section-container">
+  <section class="section-header">
+    <hr class="divider" />
+    <h1 clasee="section-title-h1 poppins-bold">
+      <span class="colored-char">M</span>anga
+      <span class="colored-char">C</span>ollection
+    </h1>
+    <hr class="divider" />
+  </section>
+  <section class="section-content">
+    <section class="section-details">
+      <h2 class="section-details-h2">
+        Welcome to Manga Inventory; Here You Can:  <span>Create,  </span>
+        <span> Edit, </span> and <span>Delete </span> Your favorite Manga.
+      </h2>
+    </section>
+    <section class="section-items">
+      <svg
+        class="trash icon"
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 448 512"
+      >
+        <!--!Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc.-->
+        <path
+          d="M135.2 17.7L128 32 32 32C14.3 32 0 46.3 0 64S14.3 96 32 96l384 0c17.7 0 32-14.3 32-32s-14.3-32-32-32l-96 0-7.2-14.3C307.4 6.8 296.3 0 284.2 0L163.8 0c-12.1 0-23.2 6.8-28.6 17.7zM416 128L32 128 53.2 467c1.6 25.3 22.6 45 47.9 45l245.8 0c25.3 0 46.3-19.7 47.9-45L416 128z"
+        />
+      </svg>
+      <svg
+        class="add icon"
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 448 512"
+      >
+        <!--!Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc.-->
+        <path
+          d="M64 32C28.7 32 0 60.7 0 96L0 416c0 35.3 28.7 64 64 64l320 0c35.3 0 64-28.7 64-64l0-320c0-35.3-28.7-64-64-64L64 32zM200 344l0-64-64 0c-13.3 0-24-10.7-24-24s10.7-24 24-24l64 0 0-64c0-13.3 10.7-24 24-24s24 10.7 24 24l0 64 64 0c13.3 0 24 10.7 24 24s-10.7 24-24 24l-64 0 0 64c0 13.3-10.7 24-24 24s-24-10.7-24-24z"
+        />
+      </svg>
+      <svg
+        class="edit icon"
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 512 512"
+      >
+        <!--!Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc.-->
+        <path
+          d="M471.6 21.7c-21.9-21.9-57.3-21.9-79.2 0L362.3 51.7l97.9 97.9 30.1-30.1c21.9-21.9 21.9-57.3 0-79.2L471.6 21.7zm-299.2 220c-6.1 6.1-10.8 13.6-13.5 21.9l-29.6 88.8c-2.9 8.6-.6 18.1 5.8 24.6s15.9 8.7 24.6 5.8l88.8-29.6c8.2-2.7 15.7-7.4 21.9-13.5L437.7 172.3 339.7 74.3 172.4 241.7zM96 64C43 64 0 107 0 160L0 416c0 53 43 96 96 96l256 0c53 0 96-43 96-96l0-96c0-17.7-14.3-32-32-32s-32 14.3-32 32l0 96c0 17.7-14.3 32-32 32L96 448c-17.7 0-32-14.3-32-32l0-256c0-17.7 14.3-32 32-32l96 0c17.7 0 32-14.3 32-32s-14.3-32-32-32L96 64z"
+        />
+      </svg>
+    </section>
+  </section>
+  <div class="main-manga-container">
+    <div class="search-query-container">
+      <% if(searchedQuery) {%>
+        
+          <p>Search queries </p>
+          <div class="search-query-results">
+        <%searchedQuery.forEach(query=>{%>
+          <%if(query.name) {%>
+              
+                <p ><%=query.name%></p>
+
+              
+            
+          <%} else {%>
+            
+              <p ><%=query%></p>
+            
+            
+          <%}%>
+        <%})%>
+          </div>
+      <%}%>
+    </div>
+   
+
+    <div class="grid-row">
+
+      <div class="filter-container">
+        <h3>Filter</h3>
+        <div class="filter-section">
+  
+          <div class="manga-search-filter">
+            <form action="/mangas" method="GET">
+              <input type="text" name="search" placeholder="Search Manga By Name...">
+              <button type="submit">Seach</button>
+            </form>
+          </div>
+  
+          <div class="filter-authors">
+            <h3>Authors</h3>
+            <form action="/mangas" method="GET">
+              <div class="filter-btns">
+                <%if(authorsNames && authorsNames.length > 0) {%>
+                  <%authorsNames.forEach((author)=>{%>
+                    <label>
+                      <input type="checkbox" name="authors[]" value="<%=author.author_id%>" >
+                      <%=author.name%>
+                    </label><br>
+                  <%})%>
+                <%} else {%>
+                  <p>No authors found</p>
+                  <%}%>
+              </div>
+              <button type="submit">Filter Author</button>
+            </form>
+          </div>
+  
+          <div class="filter-category">
+            <h3>Categories</h3>
+            <form action="/mangas" method="GET">
+              <div class="filter-btns">
+                <% if (categoriesNames && categoriesNames.length > 0) {%>
+                  <% categoriesNames.forEach((category)=>{%>
+                    <label>
+                      <input type="checkbox" name="categories[]" value="<%=category.category_id%>">
+                      <%=category.name%>
+                    </label><br>
+                  <%})%>
+                <%} else {%>
+                  <p>No Category Available</p>
+                <%}%>
+              </div>
+              <button type="submit">Filter Category</button>
+            </form>
+          </div>
+  
+          <div class="filter-releaseDate">
+            <h3>Release Year</h3>
+            <form action="/mangas" method="GET">
+              <div class="filter-btns">
+                <% if (mangaYears && mangaYears.length > 0) {%>
+                  <% let years = []%>
+                  <%let uniqueYears;%>
+                  <%mangaYears.forEach(mangaYear=>{%>
+                    <% const date = new Date(mangaYear.release_date)
+                    const year = date.getFullYear()
+                    years.push(year);
+                     uniqueYears = [...new Set(years)];
+                    
+                  %> 
+                   
+                  <%})%>
+                  <% uniqueYears.forEach((releaseDate)=>{%>
+                 
+                    <label>
+                      <input type="checkbox" name="relaseDate[]" value="<%=releaseDate%>">
+                      <%=releaseDate%>
+                    </label><br>
+                  <%})%>
+                <%} else {%>
+                  <p>No Yeaer Available</p>
+                <%}%>
+              </div>
+              <button type="submit">Filter Year</button>
+            </form>
+          </div>
+        </div>
+      </div>
+   
+    <div class="manga-collection-wrapper">
+      <div id="add-manga-div" class="add-manga-container">
+        <a href="/mangas/create"><svg
+          class="add icon"
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 448 512"
+        >
+          <!--!Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc.-->
+          <path
+            d="M64 32C28.7 32 0 60.7 0 96L0 416c0 35.3 28.7 64 64 64l320 0c35.3 0 64-28.7 64-64l0-320c0-35.3-28.7-64-64-64L64 32zM200 344l0-64-64 0c-13.3 0-24-10.7-24-24s10.7-24 24-24l64 0 0-64c0-13.3 10.7-24 24-24s24 10.7 24 24l0 64 64 0c13.3 0 24 10.7 24 24s-10.7 24-24 24l-64 0 0 64c0 13.3-10.7 24-24 24s-24-10.7-24-24z"
+          />
+        </svg></a>
+        <h2>Click to Add Manga</h2>
+      </div>
+      <%if(mangas && mangas.length>0) {%>
+      
+      <% mangas.forEach(manga => {%>
+      <div class="manga-item" >
+        <figure class="manga-img" id="manga-<%=manga.manga_id%>">
+          <img src="<%=manga.image_url%>" alt="<%=manga.title%>" onerror="this.onerror=null; this.src='/images/oops.webp';">
+        </figure>
+        <div class="manga-info">
+          <h2 class="manga-name"><%= manga.title %></h2>
+        </div>
+
+        <div class="control-btns">
+          <a href="/mangas/<%=manga.manga_id%>/show"
+            ><button type="button"><svg class="show-icon manga-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--!Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc.--><path d="M288 32c-80.8 0-145.5 36.8-192.6 80.6C48.6 156 17.3 208 2.5 243.7c-3.3 7.9-3.3 16.7 0 24.6C17.3 304 48.6 356 95.4 399.4C142.5 443.2 207.2 480 288 480s145.5-36.8 192.6-80.6c46.8-43.5 78.1-95.4 93-131.1c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C433.5 68.8 368.8 32 288 32zM144 256a144 144 0 1 1 288 0 144 144 0 1 1 -288 0zm144-64c0 35.3-28.7 64-64 64c-7.1 0-13.9-1.2-20.3-3.3c-5.5-1.8-11.9 1.6-11.7 7.4c.3 6.9 1.3 13.8 3.2 20.7c13.7 51.2 66.4 81.6 117.6 67.9s81.6-66.4 67.9-117.6c-11.1-41.5-47.8-69.4-88.6-71.1c-5.8-.2-9.2 6.1-7.4 11.7c2.1 6.4 3.3 13.2 3.3 20.3z"/></svg></button></a
+          >
+          <a href="/mangas/<%=manga.manga_id%>/update"
+            ><button type="button"><svg
+              class="edit-icon manga-icon"
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 512 512"
+            >
+              <!--!Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc.-->
+              <path
+                d="M471.6 21.7c-21.9-21.9-57.3-21.9-79.2 0L362.3 51.7l97.9 97.9 30.1-30.1c21.9-21.9 21.9-57.3 0-79.2L471.6 21.7zm-299.2 220c-6.1 6.1-10.8 13.6-13.5 21.9l-29.6 88.8c-2.9 8.6-.6 18.1 5.8 24.6s15.9 8.7 24.6 5.8l88.8-29.6c8.2-2.7 15.7-7.4 21.9-13.5L437.7 172.3 339.7 74.3 172.4 241.7zM96 64C43 64 0 107 0 160L0 416c0 53 43 96 96 96l256 0c53 0 96-43 96-96l0-96c0-17.7-14.3-32-32-32s-32 14.3-32 32l0 96c0 17.7-14.3 32-32 32L96 448c-17.7 0-32-14.3-32-32l0-256c0-17.7 14.3-32 32-32l96 0c17.7 0 32-14.3 32-32s-14.3-32-32-32L96 64z"
+              />
+            </svg></button></a
+          >
+          <form
+            action="/mangas/<%=manga.manga_id%>/delete"
+            method="POST"
+            onsubmit="return confirm('delete this manga? <%=manga.title%>')"
+          >
+            <button type="submit"><svg
+              class="delete-icon manga-icon"
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 448 512"
+            >
+              <!--!Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc.-->
+              <path
+                d="M135.2 17.7L128 32 32 32C14.3 32 0 46.3 0 64S14.3 96 32 96l384 0c17.7 0 32-14.3 32-32s-14.3-32-32-32l-96 0-7.2-14.3C307.4 6.8 296.3 0 284.2 0L163.8 0c-12.1 0-23.2 6.8-28.6 17.7zM416 128L32 128 53.2 467c1.6 25.3 22.6 45 47.9 45l245.8 0c25.3 0 46.3-19.7 47.9-45L416 128z"
+              />
+            </svg></button>
+          </form>
+        </div>
+      </div>
+  <script>
+    document.getElementById("manga-<%=manga.manga_id%>").addEventListener('click',()=>{
+      window.location.href="/mangas/<%=manga.manga_id%>/show"
+    })
+    document.getElementById("add-manga-div").addEventListener('click',()=>{
+      window.locationl.href="/mangas/create"
+    })
+  </script>
+        <% }) %>
+        <%} else {%>
+          <div class="no-mangas-container">
+            <h3 >No Results!!!</h3>
+            <a href="/mangas">Show All</a>
+          </div>
+        <%}%>
+    </div>
+  </div>
+  </div>
+</div>
