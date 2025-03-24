@@ -25,6 +25,6 @@ app.use('/categories',categoryRouter)
 app.use('/mangas',mangaRouter)
 app.use('/authors',authorRouter)
 app.get('',(req,res)=>{
-    res.render('mainPage',{title: 'Main Page'})
+    res.render('mangas/index',{title: 'Manga Inventory'})
 })
 app.listen(PORT,()=>console.log(`server running listens on port: ${PORT}`))
