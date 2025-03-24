@@ -24,7 +24,6 @@ const authorRouter = require('./routes/authorRouter')
 app.use('/categories',categoryRouter)
 app.use('/mangas',mangaRouter)
 app.use('/authors',authorRouter)
-app.get('',(req,res)=>{
-    res.render('mangas/index',{title: 'Manga Inventory'})
-})
+
+app.get('',mangaRouter)
 app.listen(PORT,()=>console.log(`server running listens on port: ${PORT}`))
