@@ -44,7 +44,7 @@ const mangaController = {
             let categoriesNames = await Category.getAll();
             let mangaYears = await Manga.getAll();
 
-            res.render('mangas/index', { searchedQuery, mangaYears, mangas, authorsNames, categoriesNames, title: "Manga Imventory", layout: './layouts/main' })
+            res.render('mangas/index', { searchedQuery, mangaYears, mangas, authorsNames, categoriesNames, title: "Manga Inventory", layout: './layouts/main' })
         } catch (error) {
             console.error(`Error while getting all mangas ${error}`)
             res.status(500).send('Server Error')
