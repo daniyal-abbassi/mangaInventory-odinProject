@@ -7,7 +7,7 @@
 
 A full-featured manga inventory system built with Express.js and PostgreSQL, featuring advanced CSS styling and responsive layouts. Developed for [The Odin Project](https://www.theodinproject.com/) curriculum.
 
-🔗 **Live Demo**:[https://mangainventory-odinproject-production.up.railway.app/](https://mangainventory-odinproject-production.up.railway.app/)
+🔗 **Live Demo**:[railway.app/mangainventory-odinproject](https://mangainventory-odinproject-production.up.railway.app/)
 
 ## ScreenShot
 
